@@ -1,37 +1,54 @@
-import throttle from 'lodash.throttle';
+import throttle from "lodash.throttle";
 
-const LOCAL_KEY = 'feedback-form-state';
+const inputEl = document.querySelector('input');
+const messageEl = document.querySelector('textarea');
+const form = document.querySelector(".feedback-form");
+const FORM_STATE = "feedback-form-state"
 
-form = document.querySelector('.feedback-form');
-
-form.addEventListener('input', throttle(onInputData, 500));
-form.addEventListener('submit', onFormSubmit);
-
-let dataForm = JSON.parse(localStorage.getItem(LOCAL_KEY)) || {};
-const { email, message } = form.elements;
-reloadPage();
-
-function onInputData(e) {
-  dataForm = { email: email.value, message: message.value };
-  localStorage.setItem(LOCAL_KEY, JSON.stringify(dataForm));
+let formData = {
+    email: "",
+    message: ""
 }
 
-function reloadPage() {
-  if (dataForm) {
-    email.value = dataForm.email || '';
-    message.value = dataForm.message || '';
-  }
+updateForm();
+
+inputEl.addEventListener('input', throttle(() => {
+    formData.email = inputEl.value;
+    localStorage.setItem(FORM_STATE, JSON.stringify(formData));
+}, 500)
+);
+
+messageEl.addEventListener('input', throttle(() => {
+    formData.message = messageEl.value;  
+    localStorage.setItem(FORM_STATE, JSON.stringify(formData));
+}, 500)
+);
+
+form.addEventListener("submit", handleSubmit);
+
+function updateForm()  {
+    if (localStorage.getItem(FORM_STATE)) {
+        formData.email = JSON.parse(localStorage.getItem(FORM_STATE)).email;
+        formData.message = JSON.parse(localStorage.getItem(FORM_STATE)).message;
+        inputEl.value = formData.email;
+        messageEl.value = formData.message;
+    } else {
+        return;
+    }
 }
 
-function onFormSubmit(e) {
-  e.preventDefault();
-  console.log({ email: email.value, message: message.value });
+function handleSubmit(event) {
+    event.preventDefault();
 
-  if (email.value === '' || message.value === '') {
-    return alert('Please fill in all the fields!');
-  }
-
-  localStorage.removeItem(LOCAL_KEY);
-  e.currentTarget.reset();
-  dataForm = {};
+    if (inputEl.value && messageEl.value) {
+    console.log(formData);
+    localStorage.clear();
+    event.currentTarget.reset();
+    formData = {
+        email: "",
+        message: ""
+    }
+    } else {
+        alert("Please make sure all fields are filled!")
+    }
 }
