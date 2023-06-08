@@ -1,10 +1,5 @@
 import throttle from "lodash.throttle";
 
-<<<<<<< HEAD
-import throttle from "lodash.throttle";
-
-=======
->>>>>>> 39f118fe20e83e2544e964d05b5d7e8355a53393
 const inputEl = document.querySelector('input');
 const messageEl = document.querySelector('textarea');
 const form = document.querySelector(".feedback-form");
