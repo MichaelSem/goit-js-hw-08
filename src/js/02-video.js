@@ -10,3 +10,4 @@ player.setCurrentTime(localStorage.getItem(CURRENT_TIME) || 0);
 const updateTime = time => localStorage.setItem(CURRENT_TIME, time.seconds);
 
 player.on('timeupdate', throttle(updateTime, 1000));
+

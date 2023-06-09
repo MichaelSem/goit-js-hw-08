@@ -6,7 +6,7 @@ import { galleryItems } from './gallery-items';
 
 console.log(galleryItems);
 
-const galleryEl = document.querySelector('./gallery-items.js');
+const galleryEl = document.querySelector('.gallery');
 
 const makeGalleryCard = ({preview, original, description}) => 
   `<a class="gallery__link" href="${original}">
